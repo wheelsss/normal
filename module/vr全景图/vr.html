@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>vr全景图</title>
+<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+<link rel="stylesheet" href="https://cdn.pannellum.org/2.4/pannellum.css">
+<style type="text/css">
+html,body{width: 100vw; height: 100vh;overflow: hidden; position: relative; }
+.head{height: 15vh;}
+#panorama{width: 100%; height: 85vh;}
+.sidebar{position: absolute; left: 0; top: 0 ;bottom: 0; z-index: 99; width: 200px; background: rgba(232,232,232,0.6);}
+.sidebar ul{padding-top: 50px;}
+.sidebar li{padding-left: 15%; line-height: 2.5;}
+.sidebar li:hover{background: #4457a1;}
+.sidebar li:hover a ,.sidebar li.on a{color: #fff;}
+.sidebar li.on{background: #122a88;}
+.sidebar li a{font-size: 2rem; color: #222;}
+ #controls { position: absolute; bottom: 0; z-index: 2; text-align: center; width: 100%; padding-bottom: 3px; }
+ .ctrl { padding: 8px 5px; width: 30px; text-align: center; background: rgba(200, 200, 200, 0.8); display: inline-block; cursor: pointer; }
+ .ctrl:hover { background: rgba(200, 200, 200, 1); }
+</style>
+	</head>
+	<body>
+
+
+<div class="head">
+
+</div>
+<div id="panorama" class="f-pr">
+	<div class="sidebar">
+		<ul id="js-imgsrc">
+			<li class="on"><a href="javascript:;" data-src = "img/1.jpg">1. 办公环境</a></li>
+			<li><a href="javascript:;" data-src = "img/5.jpg">2. 门店门头</a></li>
+			<li><a href="javascript:;" data-src = "img/2.jpg">3. 门店办公区</a></li>
+			<li><a href="javascript:;" data-src = "img/4.jpg">4. 门店货架区</a></li>
+
+		</ul>
+	</div>
+    <div id="controls">
+        <div class="ctrl" id="pan-up">&#9650;</div>
+        <div class="ctrl" id="pan-down">&#9660;</div>
+        <div class="ctrl" id="pan-left">&#9664;</div>
+        <div class="ctrl" id="pan-right">&#9654;</div>
+        <div class="ctrl" id="zoom-in">&plus;</div>
+        <div class="ctrl" id="zoom-out">&minus;</div>
+        <div class="ctrl" id="fullscreen">&#x2922;</div>
+    </div>
+</div>
+
+
+
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.pannellum.org/2.4/pannellum.js"></script>
+<script src="js/main.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+$(function() {
+	imgsrc = 'img/1.jpg';
+	var oUl =  document.getElementById('js-imgsrc');
+	var oLis = oUl.getElementsByTagName('li');
+	var index = 0;
+	loadvr(imgsrc);
+	for (var i = 0; i< oLis.length; i++) {
+		oLis[i].index = i;
+		oLis[i].onclick = function(e){
+			console.log(this.index);
+			console.log(e);
+			imgsrc = $(this).next('a').data('src');
+			loadvr(imgsrc);
+		}
+
+	}
+
+
+
+})
+
+function loadvr(imgsrc){
+	viewer = pannellum.viewer('panorama', {
+	    "type": "equirectangular",
+	    "panorama": imgsrc,
+	    "autoLoad": true,
+	    "compass": true,
+	    "northOffset": 195,
+	    "yaw": -15.4,
+	    "hfov": 120,
+	    "showControls": false
+	});
+	// Make buttons work
+	document.getElementById('pan-up').addEventListener('click', function(e) {
+	    viewer.setPitch(viewer.getPitch() + 10);
+	});
+	document.getElementById('pan-down').addEventListener('click', function(e) {
+	    viewer.setPitch(viewer.getPitch() - 10);
+	});
+	document.getElementById('pan-left').addEventListener('click', function(e) {
+	    viewer.setYaw(viewer.getYaw() - 10);
+	});
+	document.getElementById('pan-right').addEventListener('click', function(e) {
+	    viewer.setYaw(viewer.getYaw() + 10);
+	});
+	document.getElementById('zoom-in').addEventListener('click', function(e) {
+	    viewer.setHfov(viewer.getHfov() - 10);
+	});
+	document.getElementById('zoom-out').addEventListener('click', function(e) {
+	    viewer.setHfov(viewer.getHfov() + 10);
+	});
+	document.getElementById('fullscreen').addEventListener('click', function(e) {
+	    viewer.toggleFullscreen();
+	});
+
+}
+
+</script>
+
+	</body>
+</html>

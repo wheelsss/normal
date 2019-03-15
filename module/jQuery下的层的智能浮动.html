@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery navScroll | Demo</title>
+<style type="text/css">
+/* The style below is made as an example, it's not part of the plugin but you can use it if you like :) */
+
+* {
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  line-height: 1.3;
+  -webkit-font-smoothing:antialiased;
+  padding-top: 50px;
+}
+
+a {
+  color: #27677c;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1a4d7b;
+}
+
+a:visited {
+  color: #27677c;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  padding-top: 15px;
+  padding-left: 30px;
+}
+
+nav {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  padding-left: 20px;
+  background-color: white;
+}
+
+nav ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+nav li {
+  display: inline-block;
+  text-align: left;
+  font-weight: bold;
+  height: 50px;
+  line-height: 50px;
+}
+
+nav li a {
+  display: block;
+  padding: 0 40px;
+}
+
+.nav li a.active {
+  background-color: #27677c;
+  color: #FFF;
+}
+
+.nav-mobile {
+  display: none;
+  font-weight: bold;
+  width: 100%;
+}
+
+#section1 {background-color: #D1D1D1;}
+#section2 {background-color: #DFDFDF;}
+#section3 {background-color: #C7C7C7;}
+
+.click-me {
+  width: 150px;
+  height: 30px;
+  background: #435AB8;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+}
+
+.click-me a {
+  display: block;
+  color: white;
+}
+
+.scroll-status {
+  background-color: black;
+  border-top-left-radius: 4px;
+  bottom: 0;
+  color: white;
+  display: none;
+  padding: 10px;
+  position: fixed;
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    background-color: white;
+    margin-left: -30px;
+  }
+  nav li {
+    width: 100%;
+  }
+
+  nav li a {
+    padding: 0 30px;
+  }
+
+  .nav-mobile {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+@media (min-width: 769px) {
+  nav ul {
+    display: block !important;
+  }
+}
+</style>
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-mobile">
+      Click
+    </div>
+    <ul>
+      <li><a href="#section1">Section 1</a></li>
+      <li><a href="#section2">Section 2</a></li>
+      <li><a href="#section3" data-scrolltime="1500">Section 3</a></li>
+    </ul>
+  </nav>
+
+  <div class="scroll-status"></div>
+
+  <section id="section1">
+    <h1>Section 1</h1>
+    <p>
+      Drag your screen so its width is below 768 pixels to test the mobile dropdown functionality. <br>
+      You can set the breakpoint with an option. Read more about it in the README.
+    </p>
+  </section>
+  <section id="section2">
+    <h1>Section 2</h1>
+    <p>
+      You can call the plugin on any element you like as long as it contains an anchor tag with an href attribute.<br>
+      See the example button below:
+    </p>
+    <div class="click-me"><a href="#section1">Click me!</a></div>
+    <p>
+      Since a button like this doesn't require an offset (it's not fixed like the navigation bar) I set the navHeight option to '0'.
+    </p>
+  </section>
+  <section id="section3">
+    <h1>Section 3</h1>
+    As you may have noticed after clicking the 'Section 3' URL, the duration of the scrolling animation was way longer.<br>
+    You can set a specific scrollTime inside the data-scrolltime attribute (check the source).
+  </section>
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="浮动吸顶/nav.js"></script>
+  <script>
+    var $scrollStatus = $('.scroll-status');
+
+    $('.nav').navScroll({
+      mobileDropdown: true,
+      mobileBreakpoint: 768,
+      scrollSpy: true,
+      onScrollStart: function() {
+        $scrollStatus.show();
+        $scrollStatus.text('Started scrolling');
+      },
+      onScrollEnd: function() {
+        $scrollStatus.text('Scrolling ended');
+        setTimeout(function() {
+          $scrollStatus.fadeOut(200);
+        }, 1000);
+      }
+    });
+
+    $('.click-me').navScroll({
+      navHeight: 0
+    });
+
+    $('.nav').on('click', '.nav-mobile', function (e) {
+      e.preventDefault();
+      $('.nav ul').slideToggle('fast');
+    });
+  </script>
+</body>
+</html>
